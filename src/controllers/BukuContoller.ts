@@ -5,19 +5,21 @@ import sequelize from "sequelize";
 
 export const getAllBuku = async (req:Request, res:Response, next: NextFunction) => {
     try {
-        let order = req.query.order.toString()
-        if(!order){
+        let order = null;
+        if (req.query.order){
+            order = req.query.order.toString()
+        } else {
             order = 'id'
         }
         const filterWhere = <any>{}
         const penerbitWhere = <any>{}
 
-        const { kategori, nama, harga, stok, penerbit } = req.body;
+        const { kategori, nama, harga, stok, penerbit } = req.query;
         if(nama) filterWhere.nama = {
-            [sequelize.Op.like]: nama,
+            [sequelize.Op.like]: `%${nama}%`,
         }
         if(kategori) filterWhere.kategori = {
-            [sequelize.Op.like]: kategori,
+            [sequelize.Op.like]: `%${kategori}%`,
         }
         if(harga) filterWhere.harga = {
             [sequelize.Op.eq]: harga,
@@ -25,8 +27,8 @@ export const getAllBuku = async (req:Request, res:Response, next: NextFunction) 
         if(stok) filterWhere.stok = {
             [sequelize.Op.eq]: stok,
         }
-        if(penerbit) penerbitWhere.penerbit = {
-            [sequelize.Op.like]: penerbit,
+        if(penerbit) penerbitWhere.nama = {
+            [sequelize.Op.like]: `%${penerbit}%`,
         }
         const response = await Buku.findAll({
             where: filterWhere,
@@ -82,7 +84,7 @@ export const updateBukuById = async (req:Request, res:Response, next: NextFuncti
         const { kategori, nama, harga, stok, id_penerbit } = req.body
         const selectedBuku = await Buku.findOne({
             where: {
-                id: req.params.id,
+                id: id
             },
         });
 
@@ -101,11 +103,11 @@ export const updateBukuById = async (req:Request, res:Response, next: NextFuncti
         if(stok) update.stok = stok
         if(id_penerbit) update.id_penerbit = id_penerbit
 
-        const updateBuku = await Buku.update({
+        const updateBuku = await Buku.update(update, {
             where: {
-                id
-            }
-        }, update)
+                id: id
+            },
+        })
 
         if(!updateBuku){
             res.status(400).json({
@@ -118,7 +120,7 @@ export const updateBukuById = async (req:Request, res:Response, next: NextFuncti
         res.status(200).json({
             code: 200,
             info: 'success update buku',
-            data: updateBuku,
+            data: null,
         });
     } catch (error) {
         console.log(error.message);

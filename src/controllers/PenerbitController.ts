@@ -77,7 +77,7 @@ export const updatePenerbitById = async (req:Request, res:Response, next: NextFu
         const { nama, alamat, kota, telpon } = req.body
         const selectedPenerbit = await Penerbit.findOne({
             where: {
-                id: req.params.id,
+                id: id
             },
         });
 
@@ -95,11 +95,11 @@ export const updatePenerbitById = async (req:Request, res:Response, next: NextFu
         if(kota) update.kota = kota
         if(telpon) update.telpon = telpon
 
-        const updatePenerbit = await Penerbit.update({
+        const updatePenerbit = await Penerbit.update(update, {
             where: {
-                id
+                id: id
             }
-        }, update)
+        })
 
         if(!updatePenerbit){
             res.status(400).json({
@@ -112,7 +112,7 @@ export const updatePenerbitById = async (req:Request, res:Response, next: NextFu
         res.status(200).json({
             code: 200,
             info: 'success update penerbit',
-            data: updatePenerbit,
+            data: null,
         });
     } catch (error) {
         console.log(error.message);
