@@ -3,7 +3,10 @@ import db from '../database';
 import Penerbit from './PenerbitModel';
 
 const Buku = db.define('buku', {
-    id: DataTypes.STRING,
+    id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
     kategori: DataTypes.STRING,
     nama: DataTypes.STRING,
     harga: DataTypes.INTEGER,

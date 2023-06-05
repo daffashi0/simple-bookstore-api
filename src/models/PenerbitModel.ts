@@ -2,7 +2,10 @@ import { Sequelize, DataTypes } from 'sequelize';
 import db from '../database';
 
 const Penerbit = db.define('penerbit', {
-    id: DataTypes.STRING,
+    id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
     nama: DataTypes.STRING,
     alamat: DataTypes.STRING,
     kota: DataTypes.STRING,
