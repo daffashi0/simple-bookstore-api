@@ -1,26 +1,19 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import db from '../database';
-import Shift from './ShiftModel';
 
-const Employee = db.define('employees', {
-    name: DataTypes.STRING,
-    department: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    shift_id: DataTypes.INTEGER,
+const Penerbit = db.define('penerbit', {
+    id: DataTypes.STRING,
+    nama: DataTypes.STRING,
+    alamat: DataTypes.STRING,
+    kota: DataTypes.STRING,
+    telpon: DataTypes.STRING,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
 }, {
     freezeTableName: true,
 });
 
-Employee.belongsTo(Shift, {
-    foreignKey: 'shift_id',
-});
-
-Shift.hasMany(Employee, {
-    foreignKey: 'shift_id',
-});
-
-export default Employee;
+export default Penerbit;
 
 (async()=>{
     await db.sync();

@@ -1,38 +1,29 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import db from '../database';
-import Employee from './PenerbitModel';
-import ShiftTime from './ShiftTimeModel';
+import Penerbit from './PenerbitModel';
 
-const Attendance = db.define('attendance', {
-    employee_id: DataTypes.STRING,
-    shifttime_id: DataTypes.INTEGER,
-    attendance_date: DataTypes.DATE,
-    clock_in: DataTypes.TIME,
-    clock_out: DataTypes.TIME,
-    is_late: DataTypes.TINYINT,
-    lat: DataTypes.DECIMAL,
-    long: DataTypes.DECIMAL,
+const Buku = db.define('buku', {
+    id: DataTypes.STRING,
+    kategori: DataTypes.STRING,
+    nama: DataTypes.STRING,
+    harga: DataTypes.INTEGER,
+    stok: DataTypes.INTEGER,
+    id_penerbit: DataTypes.STRING,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
 }, {
     freezeTableName: true,
 });
 
-Attendance.belongsTo(Employee, {
-    foreignKey: 'employee_id',
+Penerbit.hasMany(Buku, {
+    foreignKey: 'id_penerbit',
 });
 
-Employee.hasMany(Attendance, {
-    foreignKey: 'employee_id',
+Buku.belongsTo(Penerbit, {
+    foreignKey: 'id_penerbit',
 });
 
-ShiftTime.hasMany(Attendance, {
-    foreignKey: 'shifttime_id',
-});
-
-Attendance.belongsTo(ShiftTime, {
-    foreignKey: 'shifttime_id',
-});
-
-export default Attendance;
+export default Buku;
 
 (async()=>{
     await db.sync();

@@ -1,6 +1,6 @@
 import express from 'express';
 import { authenticateToken } from '../middlewares/auth';
-import { attendShift, endShift } from '../controllers/AttendanceContoller';
+import { attendShift, endShift } from '../controllers/BukuContoller';
 
 const router = express.Router();
 
