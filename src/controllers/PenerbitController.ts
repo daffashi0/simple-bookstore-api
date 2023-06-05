@@ -6,18 +6,18 @@ export const getAllPenerbit = async (req:Request, res:Response, next: NextFuncti
     try {
         const filterWhere = <any>{};
 
-        const { nama, alamat, kota, telpon } = req.body;
+        const { nama, alamat, kota, telpon } = req.query;
         if(nama) filterWhere.nama = {
-            [sequelize.Op.like]: nama,
+            [sequelize.Op.like]: `%${nama}%`,
         }
         if(alamat) filterWhere.alamat = {
-            [sequelize.Op.like]: alamat,
+            [sequelize.Op.like]: `%${alamat}%`,
         }
         if(kota) filterWhere.kota = {
-            [sequelize.Op.like]: kota,
+            [sequelize.Op.like]: `%${kota}%`,
         }
         if(telpon) filterWhere.telpon = {
-            [sequelize.Op.like]: telpon,
+            [sequelize.Op.like]: `%${telpon}%`,
         }
         const response = await Penerbit.findAll({
             attributes: [

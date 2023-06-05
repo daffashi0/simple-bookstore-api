@@ -5,11 +5,11 @@ import sequelize from "sequelize";
 
 export const getAllBuku = async (req:Request, res:Response, next: NextFunction) => {
     try {
-        let order = null;
+        let order = [];
         if (req.query.order){
-            order = req.query.order.toString()
+            order = [req.query.order.toString(), 'ASC']
         } else {
-            order = 'id'
+            order = ['id', 'ASC']
         }
         const filterWhere = <any>{}
         const penerbitWhere = <any>{}
@@ -36,7 +36,7 @@ export const getAllBuku = async (req:Request, res:Response, next: NextFunction) 
                 model: Penerbit,
                 where: penerbitWhere,
             },
-            order: [[order, 'asc']]
+            order: [order as any]
         });
         res.status(200).json({
             code: 200,
